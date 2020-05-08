@@ -29,5 +29,11 @@ object Dataframes_Tutorial_1 extends App with Context {
   maxCount.show(1)
   maxCount2.show(1)
 
+  //getting top 5 destination country names
+  spark.sql("select DEST_COUNTRY_NAME,sum(count) as destination_total from flight_view " +
+    "group by DEST_COUNTRY_NAME " +
+    "order by sum(count) desc limit 5").show()
+  dfFlightData.groupBy("DEST_COUNTRY_NAME").sum("count").withColumnRenamed("sum(count)","destination_total")
+    .orderBy(desc("destination_total")).limit(5).show()
 
 }
