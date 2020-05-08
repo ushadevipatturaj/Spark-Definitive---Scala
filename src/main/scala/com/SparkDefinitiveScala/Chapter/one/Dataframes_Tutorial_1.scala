@@ -1,5 +1,5 @@
 package com.SparkDefinitiveScala.Chapter.one
-
+import org.apache.spark.sql.functions._
 object Dataframes_Tutorial_1 extends App with Context {
   val dfRange = spark.range(1000).toDF("Number")
   val evenNum = dfRange.where("Number % 2 =0")
@@ -13,7 +13,7 @@ object Dataframes_Tutorial_1 extends App with Context {
   dfFlightData.show(10)
   dfFlightData.sort("count").explain()
 
-  //in SQL way
+  //getting count in SQL way and spark way
   dfFlightData.createOrReplaceTempView("flight_view")
   val sqlWay = spark.sql("select DEST_COUNTRY_NAME,count(DEST_COUNTRY_NAME) from flight_view group by DEST_COUNTRY_NAME")
   val sparkWay = dfFlightData.groupBy("DEST_COUNTRY_NAME").count()
@@ -22,4 +22,12 @@ object Dataframes_Tutorial_1 extends App with Context {
 
   sqlWay.explain()
   sparkWay.explain()
+
+  //Getting max value using sql and spark
+  val maxCount = spark.sql("select max(count) from flight_view ")
+  val maxCount2 = dfFlightData.select(max("count"))
+  maxCount.show(1)
+  maxCount2.show(1)
+
+
 }
