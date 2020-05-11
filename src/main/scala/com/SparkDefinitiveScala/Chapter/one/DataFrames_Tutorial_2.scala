@@ -12,8 +12,6 @@ object DataFrames_Tutorial_2 extends App with Context {
   dsFlight.filter(row => row.DEST_COUNTRY_NAME != "Italy")
     .map(row => row)
     .show(5)
-  dsFlight.filter(row => row.DEST_COUNTRY_NAME != "Italy")
-    .map(row => flights(row.DEST_COUNTRY_NAME,row.ORIGIN_COUNTRY_NAME,row.count)).show(5)
-
-
+  val dfFlights_DS= dsFlight.filter(row => row.DEST_COUNTRY_NAME != "Italy")
+    .map(row => flights(row.DEST_COUNTRY_NAME,row.ORIGIN_COUNTRY_NAME,row.count+5)).take(5)
 }
