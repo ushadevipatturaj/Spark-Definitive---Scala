@@ -16,4 +16,14 @@ object Basic_Structured_API_DataFrames extends App with Context{
     .schema(manualSchema).format("json")
     .load("D:\\Study_Materials\\spark-definitive-scala\\src\\main\\resources\\2015-summary.json")
   dfJson.show(10)
+
+  //getting all columns of the dataframe
+  val dfColumns = dfJson.columns
+  println(dfColumns.mkString(","))
+
+  //getting the first row of a dataframe
+  val dfFirstRow = dfJson.first()
+  println(dfFirstRow)
+
+
 }
