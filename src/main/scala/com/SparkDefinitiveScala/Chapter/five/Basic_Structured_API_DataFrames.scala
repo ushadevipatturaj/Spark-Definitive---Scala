@@ -2,6 +2,7 @@ package com.SparkDefinitiveScala.Chapter.five
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.types.StructType
 import com.SparkDefinitiveScala.Chapter.one.Context
+import org.apache.spark.sql.Row
 
 object Basic_Structured_API_DataFrames extends App with Context{
   val jsonSchema = spark.read.format("json")
@@ -25,5 +26,12 @@ object Basic_Structured_API_DataFrames extends App with Context{
   val dfFirstRow = dfJson.first()
   println(dfFirstRow)
 
-
+  //creating a new row manually
+  val myRow = Row("Hello",1,true,null)
+  println(myRow.get(0))
+  println(myRow.getString(0))
+  println(myRow.getInt(1))
+  println(myRow.getAs[Boolean](2))
+  println(myRow.get(3).asInstanceOf[String])
+  println(s"Checking the datatype of a first value is string?: ${myRow.get(0).isInstanceOf[String]}")
 }
