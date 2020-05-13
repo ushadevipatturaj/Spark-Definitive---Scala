@@ -76,4 +76,11 @@ object Basic_Structured_API_DataFrames extends App with Context{
   dfJson.withColumn("One",lit(1)).show(10)
   dfJson.withColumn("WithinCountry",expr("ORIGIN_COUNTRY_NAME = DEST_COUNTRY_NAME")).show(5)
 
+  //renaming a column
+  dfJson.withColumnRenamed("ORIGIN_COUNTRY_NAME","Origin_Country").show(3)
+
+  //column names with spaces and -
+  dfJson.withColumn("orgin country-1",$"ORIGIN_COUNTRY_NAME").show(2)
+  dfJson.selectExpr("ORIGIN_COUNTRY_NAME as `This is new-column`").show(2)
+
 }
