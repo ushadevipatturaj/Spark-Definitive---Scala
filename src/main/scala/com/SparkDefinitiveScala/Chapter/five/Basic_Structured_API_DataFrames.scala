@@ -34,4 +34,17 @@ object Basic_Structured_API_DataFrames extends App with Context{
   println(myRow.getAs[Boolean](2))
   println(myRow.get(3).asInstanceOf[String])
   println(s"Checking the datatype of a first value is string?: ${myRow.get(0).isInstanceOf[String]}")
+
+  val dfSQLView: Unit = dfJson.createOrReplaceTempView("JsonView")
+  //creating dataframes using RDD from manual rows
+
+  val manualSchema_Row = StructType(Array(StructField("Name",StringType,nullable = true),
+    StructField("Id",IntegerType,nullable = true),
+    StructField("Day_Scholar",BooleanType,nullable = true)))
+
+  val newRow = Seq(Row("Usha",122,true))
+  val newRDD = spark.sparkContext.parallelize(newRow)
+  val dffromRDD = spark.createDataFrame(newRDD,manualSchema_Row)
+  dffromRDD.show(10)
+
 }
