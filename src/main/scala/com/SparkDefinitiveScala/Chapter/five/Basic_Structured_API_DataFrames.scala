@@ -3,6 +3,7 @@ import org.apache.spark.sql.types._
 import org.apache.spark.sql.types.StructType
 import com.SparkDefinitiveScala.Chapter.one.Context
 import org.apache.spark.sql.Row
+import org.apache.spark.sql.functions._
 
 object Basic_Structured_API_DataFrames extends App with Context{
   val jsonSchema = spark.read.format("json")
@@ -51,5 +52,20 @@ object Basic_Structured_API_DataFrames extends App with Context{
   import spark.implicits._
   val dffromRDD1 = Seq(("Usha",122,true)).toDF("Name","Id","Day_Scholar")
   dffromRDD1.show()
+
+  //select,selectexpr
+  dfJson.select("DEST_COUNTRY_NAME").show(5)
+  dfJson.select("DEST_COUNTRY_NAME","ORIGIN_COUNTRY_NAME").show(5)
+  dfJson.select(dfJson.col("ORIGIN_COUNTRY_NAME"),
+    col("ORIGIN_COUNTRY_NAME"),
+    column("ORIGIN_COUNTRY_NAME"),
+    'DEST_COUNTRY_NAME,
+    $"DEST_COUNTRY_NAME",
+    expr("DEST_COUNTRY_NAME")).show(5)
+  dfJson.select(expr("DEST_COUNTRY_NAME as destination_country")).show(2)
+  dfJson.select($"DEST_COUNTRY_NAME".alias("dest_country")).show(2)
+  dfJson.selectExpr("DEST_COUNTRY_NAME as destination_country","ORIGIN_COUNTRY_NAME").show(2)
+  dfJson.selectExpr("*"," (ORIGIN_COUNTRY_NAME = DEST_COUNTRY_NAME) as within_country").show(3)
+  dfJson.selectExpr("avg(count)","count(distinct(DEST_COUNTRY_NAME)) as total_destination_countries").show(5)
 
 }
