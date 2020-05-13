@@ -68,4 +68,12 @@ object Basic_Structured_API_DataFrames extends App with Context{
   dfJson.selectExpr("*"," (ORIGIN_COUNTRY_NAME = DEST_COUNTRY_NAME) as within_country").show(3)
   dfJson.selectExpr("avg(count)","count(distinct(DEST_COUNTRY_NAME)) as total_destination_countries").show(5)
 
+  //converting to spark types
+  //literal
+  dfJson.select(expr("*"),lit(1).as("One")).show(5)
+
+  //adding a column to dataframe
+  dfJson.withColumn("One",lit(1)).show(10)
+  dfJson.withColumn("WithinCountry",expr("ORIGIN_COUNTRY_NAME = DEST_COUNTRY_NAME")).show(5)
+
 }
