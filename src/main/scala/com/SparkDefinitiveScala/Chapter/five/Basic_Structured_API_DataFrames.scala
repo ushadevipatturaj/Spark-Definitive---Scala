@@ -47,4 +47,9 @@ object Basic_Structured_API_DataFrames extends App with Context{
   val dffromRDD = spark.createDataFrame(newRDD,manualSchema_Row)
   dffromRDD.show(10)
 
+  //another way of creating DF from manual row
+  import spark.implicits._
+  val dffromRDD1 = Seq(("Usha",122,true)).toDF("Name","Id","Day_Scholar")
+  dffromRDD1.show()
+
 }
