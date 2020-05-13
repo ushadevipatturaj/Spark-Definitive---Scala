@@ -82,5 +82,8 @@ object Basic_Structured_API_DataFrames extends App with Context{
   //column names with spaces and -
   dfJson.withColumn("orgin country-1",$"ORIGIN_COUNTRY_NAME").show(2)
   dfJson.selectExpr("ORIGIN_COUNTRY_NAME as `This is new-column`").show(2)
+  dfJson.drop("ORIGIN_COUNTRY_NAME").show(2)
+  dfJson.withColumn("Long_Count",$"count".cast(LongType)).show(3)
+
 
 }
