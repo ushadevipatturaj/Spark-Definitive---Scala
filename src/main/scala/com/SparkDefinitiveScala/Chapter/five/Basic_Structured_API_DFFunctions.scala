@@ -32,5 +32,6 @@ object Basic_Structured_API_DFFunctions extends App with Context{
 
   //limit
   dfJson.limit(10).show()
+  dfJson.orderBy("ORIGIN_COUNTRY_NAME").limit(5).show()
 
 }
