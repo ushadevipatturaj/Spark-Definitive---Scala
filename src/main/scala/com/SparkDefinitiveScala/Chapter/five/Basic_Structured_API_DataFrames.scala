@@ -85,5 +85,13 @@ object Basic_Structured_API_DataFrames extends App with Context{
   dfJson.drop("ORIGIN_COUNTRY_NAME").show(2)
   dfJson.withColumn("Long_Count",$"count".cast(LongType)).show(3)
 
+  //filtering rows using filter and where
+  dfJson.filter($"count" <2 ).show()
+  dfJson.where($"count"<2 and  $"ORIGIN_COUNTRY_NAME"=!="Croatia").show()
 
+  //getting distinct values from a dataframe
+  dfJson.select($"ORIGIN_COUNTRY_NAME").distinct().show(5)
+  dfJson.select("ORIGIN_COUNTRY_NAME","DEST_COUNTRY_NAME").distinct().show(5)
+  val countofDistinct = dfJson.select("ORIGIN_COUNTRY_NAME").distinct().count()
+  println(s"count of distinct ORIGIN_COUNTRY_NAME $countofDistinct")
 }
