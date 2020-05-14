@@ -93,5 +93,18 @@ object Basic_Structured_API_DataFrames extends App with Context{
   dfJson.select($"ORIGIN_COUNTRY_NAME").distinct().show(5)
   dfJson.select("ORIGIN_COUNTRY_NAME","DEST_COUNTRY_NAME").distinct().show(5)
   val countofDistinct = dfJson.select("ORIGIN_COUNTRY_NAME").distinct().count()
+  val countoftotal = dfJson.count()
   println(s"count of distinct ORIGIN_COUNTRY_NAME $countofDistinct")
+
+  //getting random sample of a dataframe
+  println(s"count of total file $countoftotal")
+  val count_of_Fraction1 = dfJson.sample(withReplacement = false,0.5,5).count()
+  val count_of_Fraction2 = dfJson.sample(withReplacement = false,0.7,5).count()
+  val count_of_Fraction3 = dfJson.sample(withReplacement = false,0.2,5).count()
+  println(s"count of samples with the different fractions $count_of_Fraction1,$count_of_Fraction2,$count_of_Fraction3")
+
+  //random splits
+  val dataframeSplits = dfJson.randomSplit(Array(0.75,0.25),5)
+  println(s"count of each dataframes after splitted ${dataframeSplits(0).count()},${dataframeSplits(1).count()}")
+
 }
