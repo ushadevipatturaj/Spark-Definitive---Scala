@@ -14,5 +14,9 @@ object SparkTypes_Tutorial1 extends App with Context{
   //converting to the spark types
   dfCSV.select(lit(5),lit("five"),lit(5.0)).show(2)
   import spark.implicits._
+  //checking whether the value is available
   dfCSV.select("InvoiceNo","StockCode","Quantity","InvoiceDate","UnitPrice").where($"InvoiceNo".equalTo(536365)).show()
+  dfCSV.select("InvoiceNo","StockCode","Quantity","InvoiceDate","UnitPrice").where($"InvoiceNo" ===536365).show()
+  dfCSV.where("InvoiceNo = 536365").show()
+  dfCSV.where($"StockCode".contains("DOT").or($"InvoiceNo" ===536365).and($"CustomerID".isNotNull)).show()
 }
