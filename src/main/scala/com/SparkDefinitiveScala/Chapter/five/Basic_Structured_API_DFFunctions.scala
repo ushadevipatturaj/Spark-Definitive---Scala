@@ -34,4 +34,28 @@ object Basic_Structured_API_DFFunctions extends App with Context{
   dfJson.limit(10).show()
   dfJson.orderBy("ORIGIN_COUNTRY_NAME").limit(5).show()
 
+  //repartition and coalesce
+  val repartition1 = dfJson.rdd.getNumPartitions
+  println(s"current no of partitions are $repartition1")
+  dfJson.repartition(5)
+  val repartition2 = dfJson.rdd.getNumPartitions
+  println(s"current no of partitions are $repartition2")
+  //repartition on the column level
+  dfJson.repartition(col("ORIGIN_COUNTRY_NAME"))
+  val repartition3 = dfJson.rdd.getNumPartitions
+  println(s"current no of partitions are $repartition3")
+  dfJson.repartition(5,col("ORIGIN_COUNTRY_NAME"))
+  val repartition4 = dfJson.rdd.getNumPartitions
+  println(s"current no of partitions are $repartition4")
+  dfJson.repartition(5,col("ORIGIN_COUNTRY_NAME")).coalesce(2)
+  val repartition5 = dfJson.rdd.getNumPartitions
+  println(s"current no of partitions are $repartition5")
+
+  //collecting rows to the driver
+  val dfTen = dfJson.limit(10)
+  dfTen.show(5)
+  dfTen.limit(5)
+
+  dfTen.collect()
+  dfTen.toLocalIterator()
 }
