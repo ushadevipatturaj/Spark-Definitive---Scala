@@ -26,4 +26,15 @@ object SparkTypes_Tutorial1 extends App with Context{
     .select("InvoiceNo","StockCode","Quantity","InvoiceDate","UnitPrice","isExpensive").where($"isExpensive").show()
   dfCSV.withColumn("isExpensive",not($"UnitPrice" >= 20)).filter($"isExpensive").show(5)
 
+  //Numbers related functions
+  dfCSV.select(col("UnitPrice"),col("Quantity"),round(pow($"Quantity" * $"UnitPrice",2 ),2).alias("total_Price_withRound2Dec")
+    ,round($"UnitPrice").alias("total_Price_withRound")
+    ,bround($"UnitPrice").alias("total_Price_withBRound")).show(10)
+  dfCSV.select(corr($"Quantity" , $"UnitPrice")).show()
+  dfCSV.describe().show()
+  val covariance = dfCSV.stat.cov("Quantity" , "UnitPrice")
+  println(s"covariance between  Quantity UnitPrice is $covariance")
+  val approxQuantile = dfCSV.stat.approxQuantile("Quantity" ,Array(0.5),0.05)
+  println(s"approximate Quantile of UnitPrice is ${approxQuantile.mkString(",")}")
+
 }
