@@ -36,8 +36,17 @@ object SparkTypes_Tutorial1 extends App with Context{
   println(s"covariance between  Quantity UnitPrice is $covariance")
   val approxQuantile = dfCSV.stat.approxQuantile("Quantity" ,Array(0.5),0.05)
   println(s"approximate Quantile of UnitPrice is ${approxQuantile.mkString(",")}")
-  dfCSV.stat.crosstab("Quantity" , "UnitPrice").show(15)
+  dfCSV.stat.crosstab("InvoiceNo" , "CustomerID").show(15)
   dfCSV.stat.freqItems(Seq("Quantity" , "UnitPrice")).show(10)
   dfCSV.select(monotonically_increasing_id().alias("Unique_Id"),$"*").show(10)
 
+  //String functions
+  dfCSV.select($"Country",initcap($"Country"),lower($"Country"),upper($"Country")).show(10)
+  dfCSV.select(
+    ltrim(lit("    HELLO    ")).as("ltrim"),
+    rtrim(lit("    HELLO    ")).as("rtrim"),
+    trim(lit("    HELLO    ")).as("trim"),
+    lpad(lit("HELLO"),8,"*"),
+    rpad(lit("HELLO"),8,"*")
+  ).show(5)
 }
