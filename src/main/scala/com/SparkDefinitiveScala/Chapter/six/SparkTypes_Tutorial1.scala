@@ -18,6 +18,12 @@ object SparkTypes_Tutorial1 extends App with Context{
   dfCSV.select("InvoiceNo","StockCode","Quantity","InvoiceDate","UnitPrice").where($"InvoiceNo".equalTo(536365)).show()
   dfCSV.select("InvoiceNo","StockCode","Quantity","InvoiceDate","UnitPrice").where($"InvoiceNo" ===536365).show()
   dfCSV.where("InvoiceNo = 536365").show()
+
   dfCSV.where($"StockCode".contains("DOT").or($"InvoiceNo" ===536365).and($"CustomerID".isNotNull)).show()
+  val stockCode = $"StockCode".contains("DOT")
+  val unitPrice = $"UnitPrice" > 600
+  dfCSV.withColumn("isExpensive",stockCode and unitPrice)
+    .select("InvoiceNo","StockCode","Quantity","InvoiceDate","UnitPrice","isExpensive").where($"isExpensive").show()
+  dfCSV.withColumn("isExpensive",not($"UnitPrice" >= 20)).filter($"isExpensive").show(5)
 
 }
