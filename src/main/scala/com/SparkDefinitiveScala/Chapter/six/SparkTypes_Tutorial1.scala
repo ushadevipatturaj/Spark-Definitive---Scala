@@ -3,7 +3,6 @@ package com.SparkDefinitiveScala.Chapter.six
 import com.SparkDefinitiveScala.Chapter.one.Context
 import org.apache.spark.sql.functions._
 
-
 object SparkTypes_Tutorial1 extends App with Context{
   val dfCSV = spark.read
     .option("header",value = true)
@@ -49,4 +48,9 @@ object SparkTypes_Tutorial1 extends App with Context{
     lpad(lit("HELLO"),8,"*"),
     rpad(lit("HELLO"),8,"*")
   ).show(5)
+
+  dfCSV.select($"Description",regexp_replace($"Description","WHITE|BLUE|BLACK|YELLOW|RED|GREEN","COLOUR"))
+    .show(2,truncate = false)
+  dfCSV.select($"Description",regexp_extract($"Description","BLUE|HEART|WHITE|YELLOW|RED|GREEN",0))
+    .show(2,truncate = false)
 }
