@@ -53,4 +53,14 @@ object SparkTypes_Tutorial1 extends App with Context{
     .show(2,truncate = false)
   dfCSV.select($"Description",regexp_extract($"Description","BLUE|HEART|WHITE|YELLOW|RED|GREEN",0))
     .show(2,truncate = false)
+  dfCSV.select($"Description",translate($"Description","W","N").as("Replaced_Description"))
+    .show(2,truncate = false)
+
+  //contains
+  dfCSV.withColumn("hasSimpleColour",$"Description".contains("BLACK"))
+    .where("hasSimpleColour").select("Description").show(5,truncate = false)
+  val white = instr($"Description","WHITE")>1
+  val black = instr($"Description","BLACK")>1
+  dfCSV.withColumn("BlackorWhite",black or white)
+    .where($"BlackorWhite").select($"Description").show(5,truncate = false)
 }
