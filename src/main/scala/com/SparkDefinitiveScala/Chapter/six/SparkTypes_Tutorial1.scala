@@ -9,7 +9,7 @@ object SparkTypes_Tutorial1 extends App with Context{
     .option("inferSchema", value = true)
     .csv("D:\\Study_Materials\\spark-definitive-scala\\src\\main\\resources\\2010-12-01.csv")
 
-  dfCSV.show(5)
+  //dfCSV.show(5)
   //converting to the spark types
   dfCSV.select(lit(5),lit("five"),lit(5.0)).show(2)
   import spark.implicits._
