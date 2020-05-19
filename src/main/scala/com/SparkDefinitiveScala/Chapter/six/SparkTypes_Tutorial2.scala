@@ -46,5 +46,19 @@ object SparkTypes_Tutorial2 extends App with Context {
   val countNotNull = dfCSV.na.drop().count()
   val countNull = dfCSV.count()
   println(s"Count of not null rows and null rows $countNotNull $countNull")
+  //fill
+  dfCSV.na.fill("Null values will be replaced")
+    .filter($"Description"==="Null values will be replaced").show(10,truncate = false)
+  dfCSV.na.fill(5,Seq("CustomerID"))
+    .filter($"CustomerID"===5).show(10,truncate = false)
+  dfCSV.na.fill(7.0,Seq("CustomerID","Description"))
+    .filter($"CustomerID"===7.0).show(10,truncate = false)
+  dfCSV.na.fill(Map("CustomerID" ->75.0,"Description"->"No Value","StockCode" ->5))
+    .filter($"CustomerID"===75.0).show(10,truncate = false)
+
+  //replace
+  dfCSV.na.replace("Description",Map("WHITE"->"COLOURFUL","" -> "UNKNOWN"))
+    .filter($"Description".contains("COLOURFUL"))
+    .show(5,truncate = false)
 
 }
