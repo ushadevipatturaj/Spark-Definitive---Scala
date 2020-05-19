@@ -25,6 +25,18 @@ object SparkTypes_Tutorial2 extends App with Context {
   dfDate_Time.printSchema()
 
   //date_add and date_sub
-
   dfDate_Time.select(date_add($"Today",3),date_sub($"Today",3)).show(5,truncate = false)
+
+  //datediff and months_between
+  dfDate_Time.withColumn("OldDate",date_add($"Today",3))
+    .withColumn("NewDate",date_sub($"Today",3))
+    .select(datediff($"OldDate",$"NewDate"),months_between($"OldDate",$"NewDate")).show(1)
+
+  //to_date and date_format and to_timestamp
+  spark.range(5).withColumn("DateConverted" , to_date(lit("20-04-2020"),"dd-MM-yyyy"))
+    .withColumn("diffDateFormat",date_format($"DateConverted","yyyyMMdd")).show(5)
+  dfCSV.select(to_timestamp($"InvoiceDate","yyyy-MM-dd HH:mm:ss"))
+    .withColumn("LiteralTimestamp",to_timestamp(lit("2010-12-07"),"yyyy-MM-dd"))
+    .filter($"InvoiceDate">lit("2010-12-01 08:30:00")).show(5,truncate = false)
+
 }
