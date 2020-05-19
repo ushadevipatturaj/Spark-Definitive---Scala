@@ -39,4 +39,12 @@ object SparkTypes_Tutorial2 extends App with Context {
     .withColumn("LiteralTimestamp",to_timestamp(lit("2010-12-07"),"yyyy-MM-dd"))
     .filter($"InvoiceDate">lit("2010-12-01 08:30:00")).show(5,truncate = false)
 
+  //Handling Null values
+  //coalesce gives the non null rows
+  dfCSV.select(coalesce($"Description"),coalesce($"CustomerID")).show(5,truncate = false)
+  //ifnull,nullif,nvl,nvl2
+  val countNotNull = dfCSV.na.drop().count()
+  val countNull = dfCSV.count()
+  println(s"Count of not null rows and null rows $countNotNull $countNull")
+
 }
