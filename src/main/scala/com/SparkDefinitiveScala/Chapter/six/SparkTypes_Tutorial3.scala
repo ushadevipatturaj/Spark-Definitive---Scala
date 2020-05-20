@@ -42,4 +42,18 @@ object SparkTypes_Tutorial3 extends App with Context{
     .select("FirstName","LastName","Class","RollNumber")
   dfNormalSchool.show(truncate =false)
 
+  //showing json format
+  val json = manualComplexSchema.prettyJson
+  println(json)
+  import spark.implicits._
+  //Arrays
+  val dfArray = dfCSV.withColumn("SplittedDesc",split($"Description"," "))
+  dfArray.show(5,truncate = false)
+  dfArray.selectExpr("SplittedDesc[0]","SplittedDesc[1]").show(5,truncate = false)
+  dfArray.select(size($"SplittedDesc")).show(5,truncate = false)
+  dfArray.select(array_contains($"SplittedDesc","WHITE")).show(5,truncate = false)
+
+  //explode
+  dfArray.withColumn("exploded",explode($"SplittedDesc"))
+    .select("InvoiceNo","SplittedDesc","exploded").show(5, truncate = false)
 }
