@@ -63,4 +63,10 @@ object SparkTypes_Tutorial3 extends App with Context{
   dfCSV.select(map($"Description",$"InvoiceNo").alias("MapComplexType"))
     .selectExpr("explode(MapComplexType)").show(10,truncate = false)
 
+  //Working with Json files
+  val jsonString = """ '{"MyJasonKey":{"MyJsonValue1":[1,2,3],"MyJsonValue2":[3,4,5]}}' """
+  val dfJson = spark.range(1).select(expr(jsonString).as("JsonString"))
+  dfJson.select(get_json_object($"JsonString","$.MyJasonKey.MyJsonValue1[2]"),
+    json_tuple($"JsonString","MyJasonKey")).show(truncate = false)
+
 }
