@@ -56,4 +56,11 @@ object SparkTypes_Tutorial3 extends App with Context{
   //explode
   dfArray.withColumn("exploded",explode($"SplittedDesc"))
     .select("InvoiceNo","SplittedDesc","exploded").show(5, truncate = false)
+  //Map -key value pair
+  dfCSV.select(map($"Description",$"InvoiceNo").alias("MapComplexType"))
+    .selectExpr("MapComplexType['WHITE METAL LANTERN']").show(10,truncate = false)
+
+  dfCSV.select(map($"Description",$"InvoiceNo").alias("MapComplexType"))
+    .selectExpr("explode(MapComplexType)").show(10,truncate = false)
+
 }
