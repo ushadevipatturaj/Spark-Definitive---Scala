@@ -27,4 +27,15 @@ object SparkTypes_Tutorial4 extends App with Context{
   dfCSV.selectExpr("(InvoiceNo,Description) as Json_Type")
     .select(to_json($"Json_Type").as("JsonValue"))
     .select(from_json($"JsonValue",parseSchema)).show(5,truncate = false)
+
+  //udf
+  def pow3(value :Double):Double={
+    value*value*value
+  }
+  val udfFunction = udf(pow3(_:Double):Double)
+  dfCSV.select(udfFunction($"Quantity")).show(10,truncate = false)
+
+  //registering udf
+  spark.udf.register("power3",pow3(_:Double):Double)
+  dfCSV.selectExpr("power3(Quantity)").show(10,truncate = false)
 }
