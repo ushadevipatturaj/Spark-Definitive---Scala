@@ -16,4 +16,8 @@ object Aggregation_Tutorial1 extends App with Context {
   ,first("Description"),last("Description")).show(10,truncate = true)
   val firstRow = dfCSV.first()
   println(firstRow.mkString(","))
+
+  dfCSV.select(sumDistinct("Quantity"),avg("Quantity"),variance("Quantity")
+    ,var_pop("Quantity"),var_samp("Quantity"),stddev("Quantity")
+    ,stddev_pop("Quantity"),stddev_samp("Quantity")).show(truncate = false)
 }
