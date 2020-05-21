@@ -17,7 +17,13 @@ object Aggregation_Tutorial1 extends App with Context {
   val firstRow = dfCSV.first()
   println(firstRow.mkString(","))
 
+  //sumDistinct,avg,variance,var_samp,var_pop,stddev,stddev_pop,stddev_samp
   dfCSV.select(sumDistinct("Quantity"),avg("Quantity"),variance("Quantity")
     ,var_pop("Quantity"),var_samp("Quantity"),stddev("Quantity")
     ,stddev_pop("Quantity"),stddev_samp("Quantity")).show(truncate = false)
+
+  //corr,covar_pop,covar_samp
+  dfCSV.select(corr("Quantity","UnitPrice"),covar_pop("Quantity","UnitPrice")
+  ,covar_samp("Quantity","UnitPrice")).show(truncate = false)
+
 }
