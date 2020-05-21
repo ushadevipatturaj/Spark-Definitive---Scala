@@ -26,4 +26,8 @@ object Aggregation_Tutorial1 extends App with Context {
   dfCSV.select(corr("Quantity","UnitPrice"),covar_pop("Quantity","UnitPrice")
   ,covar_samp("Quantity","UnitPrice")).show(truncate = false)
 
+  //Aggregating complex types list and Set
+  dfCSV.select(collect_list("Country"),size(collect_list("Country")),
+    collect_set("Country"),size(collect_set("Country"))).show()
+
 }
