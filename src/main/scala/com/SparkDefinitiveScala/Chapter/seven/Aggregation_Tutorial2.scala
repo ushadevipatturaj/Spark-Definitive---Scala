@@ -1,5 +1,7 @@
 package com.SparkDefinitiveScala.Chapter.seven
 import com.SparkDefinitiveScala.Chapter.one.Context
+import org.apache.spark.sql.catalyst.expressions.GroupingID
+import org.apache.spark.sql.catalyst.plans.logical.GroupingSets
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions._
 object Aggregation_Tutorial2 extends App with Context {
@@ -28,4 +30,17 @@ object Aggregation_Tutorial2 extends App with Context {
   import spark.implicits._
   dfCSV.select($"Quantity",$"InvoiceDate",$"CustomerID",maxPurchase.as("MaxPurchase"),rankval.as("Rank"),
     denseRank.as("DenseRank")).show(truncate = false)
+
+  //Grouping Sets only on SQL
+  dfCSV.createOrReplaceTempView("DFView")
+  spark.sql("""
+    select CustomerID,StockCode,sum(Quantity) from DFView Group by CustomerID,StockCode Grouping Sets(CustomerID,StockCode)
+  order by CustomerID asc nulls last,StockCode asc nulls last""")
+    .show(25, truncate = false)
+
+  //rollups
+
+  dfCSV.rollup("InvoiceDate", "Country").agg(sum("Quantity"))
+    .selectExpr("InvoiceDate", "Country", "`sum(Quantity)` as total_quantity") .orderBy("InvoiceDate")
+    .show(10, truncate = false)
 }
