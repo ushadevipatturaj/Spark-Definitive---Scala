@@ -1,7 +1,5 @@
 package com.SparkDefinitiveScala.Chapter.seven
 import com.SparkDefinitiveScala.Chapter.one.Context
-import org.apache.spark.sql.catalyst.expressions.GroupingID
-import org.apache.spark.sql.catalyst.plans.logical.GroupingSets
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions._
 object Aggregation_Tutorial2 extends App with Context {
@@ -41,6 +39,11 @@ object Aggregation_Tutorial2 extends App with Context {
   //rollups
 
   dfCSV.rollup("InvoiceDate", "Country").agg(sum("Quantity"))
+    .selectExpr("InvoiceDate", "Country", "`sum(Quantity)` as total_quantity") .orderBy("InvoiceDate")
+    .show(10, truncate = false)
+
+  //cube
+  dfCSV.cube("InvoiceDate", "Country").agg(sum("Quantity"))
     .selectExpr("InvoiceDate", "Country", "`sum(Quantity)` as total_quantity") .orderBy("InvoiceDate")
     .show(10, truncate = false)
 }
