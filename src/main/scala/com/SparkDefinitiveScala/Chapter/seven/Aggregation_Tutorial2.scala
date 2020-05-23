@@ -6,7 +6,7 @@ object Aggregation_Tutorial2 extends App with Context {
   val dfCSV = spark.read
     .option("header",value = true)
     .option("inferSchema", value = true)
-    .csv("D:\\Study_Materials\\spark-definitive-scala\\src\\main\\resources\\2010-12-01.csv")
+    .csv("D:\\Study_Materials\\spark-definitive-scala\\src\\main\\resources\\*.csv")
   //Grouping
   //GroupBy
 
@@ -46,4 +46,10 @@ object Aggregation_Tutorial2 extends App with Context {
   dfCSV.cube("InvoiceDate", "Country").agg(sum("Quantity"))
     .selectExpr("InvoiceDate", "Country", "`sum(Quantity)` as total_quantity") .orderBy("InvoiceDate")
     .show(10, truncate = false)
+
+  //pivot
+  val pivotDF = dfCSV.groupBy("InvoiceDate").pivot("Country").sum()
+  println(pivotDF.columns.mkString(","))
+  pivotDF.where("InvoiceDate > '2010-12-01'").select("InvoiceDate","United Kingdom_sum(Quantity)")
+    .show(5, truncate = false)
 }
