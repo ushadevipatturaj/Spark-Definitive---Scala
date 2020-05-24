@@ -1,6 +1,6 @@
 package com.SparkDefinitiveScala.Chapter.eight
 import com.SparkDefinitiveScala.Chapter.one.Context
-
+import org.apache.spark.sql.functions._
 object Joins_Tutorial1 extends App with Context{
   import spark.implicits._
   val person = Seq((0, "Bill Chambers", 0, Seq(100)),
@@ -29,5 +29,8 @@ object Joins_Tutorial1 extends App with Context{
   person.join(graduateProgram,Seq("id"),"left_anti").show(truncate = false)
   person.join(graduateProgram,Seq("id"),"left_semi").show(truncate = false)
   person.crossJoin(graduateProgram).show(truncate = false)
+
+  //joining on complex types
+  person.withColumnRenamed("id","personId").join(sparkStatus,expr("array_contains(spark_status,id)")).show(truncate = false)
 
 }
