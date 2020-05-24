@@ -22,5 +22,12 @@ object Joins_Tutorial1 extends App with Context{
   person.join(graduateProgram,person("id") === graduateProgram("id")).show(truncate = false)
   person.join(graduateProgram,person("id") === graduateProgram("id"),"inner").show(truncate = false)
   person.join(graduateProgram,Seq("id"),"inner").show(truncate = false)
+  person.join(graduateProgram,Seq("id"),"left_outer").show(truncate = false)
+  person.join(graduateProgram,Seq("id"),"left").show(truncate = false)
+  person.join(graduateProgram,Seq("id"),"right_outer").show(truncate = false)
+  person.join(graduateProgram,Seq("id"),"right").show(truncate = false)
+  person.join(graduateProgram,Seq("id"),"left_anti").show(truncate = false)
+  person.join(graduateProgram,Seq("id"),"left_semi").show(truncate = false)
+  person.crossJoin(graduateProgram).show(truncate = false)
 
 }
