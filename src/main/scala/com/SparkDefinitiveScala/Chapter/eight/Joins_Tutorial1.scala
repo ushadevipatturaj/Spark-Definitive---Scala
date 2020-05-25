@@ -33,4 +33,11 @@ object Joins_Tutorial1 extends App with Context{
   //joining on complex types
   person.withColumnRenamed("id","personId").join(sparkStatus,expr("array_contains(spark_status,id)")).show(truncate = false)
 
+  //handling duplicate columns in join
+  val graduateProgram_renamed = graduateProgram.withColumnRenamed("id","graduate_program")
+  val graduateProgram_renamed2 = graduateProgram.withColumnRenamed("id","graduate_program_id")
+  person.join(graduateProgram_renamed,"graduate_program").select("graduate_program").show(truncate = false)
+  person.join(graduateProgram_renamed,person("graduate_program") === graduateProgram_renamed("graduate_program"))
+    .drop(person.col("graduate_program")).show(truncate = false)
+  person.join(graduateProgram_renamed2,person("graduate_program") === graduateProgram_renamed2("graduate_program_id")).show(truncate = false)
 }
