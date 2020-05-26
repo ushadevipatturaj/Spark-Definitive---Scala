@@ -60,5 +60,4 @@ object DataSources_Tutorial2 extends App with Context {
   csvFile.select("ORIGIN_COUNTRY_NAME").write.format("text").mode("overwrite")
     .save("D:\\Study_Materials\\spark-definitive-scala\\src\\main\\resources\\2015-summary.txt")
   spark.read.textFile("D:\\Study_Materials\\spark-definitive-scala\\src\\main\\resources\\2015-summary.txt").show(10)
-
 }
