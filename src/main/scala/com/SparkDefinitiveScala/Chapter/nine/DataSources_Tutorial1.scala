@@ -1,5 +1,4 @@
 package com.SparkDefinitiveScala.Chapter.nine
-
 object DataSources_Tutorial1 extends App with Context {
   //reading csv file
   val csvFile = spark.read.format("csv")
@@ -26,4 +25,13 @@ object DataSources_Tutorial1 extends App with Context {
   parquetFile.show(5,truncate = false)
   parquetFile.write.mode("OVERWRITE").format("parquet")
     .save("D:\\Study_Materials\\spark-definitive-scala\\src\\main\\resources\\2015-summary-fromcode.parquet")
+
+  //orc files
+
+//  val orcFile = spark.read.format("orc")
+//    .load("D:\\Study_Materials\\spark-definitive-scala\\src\\main\\resources\\2010-summary.orc")
+//
+//  orcFile.show(5,truncate = false)
+
+
 }
