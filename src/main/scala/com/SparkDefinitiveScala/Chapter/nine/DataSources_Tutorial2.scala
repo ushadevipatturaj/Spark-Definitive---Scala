@@ -39,4 +39,18 @@ object DataSources_Tutorial2 extends App with Context {
   val parallelRead  = spark.read.jdbc(url,tablename,column,lowerBound,upperBound,numPartition,props).count()
   println(s"count of rows $parallelRead")
 
+  //writing to a table
+  val newPath = "jdbc:sqlite:\\D:\\Study_Materials\\spark-definitive-scala\\src\\main\\resources\\flight_data_fromcode.db"
+  dbTable.write.mode("overwrite").jdbc(newPath,tablename,props)
+  val count_written = spark.read.jdbc(newPath,tablename,props).count()
+  println(count_written)
+
+  val csvFile = spark.read.format("csv")
+    .option("inferSchema",value = true).option("mode","FAILFAST")
+    .option("header",value = true)
+    .load("D:\\Study_Materials\\spark-definitive-scala\\src\\main\\resources\\2015-summary.csv")
+
+  val newCsvPath = "jdbc:sqlite:\\D:\\Study_Materials\\spark-definitive-scala\\src\\main\\resources\\2015-summary_fromcode.db"
+  csvFile.write.mode("overwrite").jdbc(newCsvPath,"RetailData",props)
+
 }
