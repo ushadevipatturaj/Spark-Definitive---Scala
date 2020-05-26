@@ -14,5 +14,8 @@ object DataSources_Tutorial2 extends App with Context {
 
   val dbTable = spark.read.format("jdbc").option("dbtable",tablename).option("url",url).option("driver",driver).load()
   dbTable.show(5)
+  val pushdownQuery = """(select distinct(destination) from flights) as flight_info"""
+  val dbTable_pd = spark.read.format("jdbc").option("dbtable",pushdownQuery).option("url",url).option("driver",driver).load()
+  dbTable_pd.show(5)
 
 }
