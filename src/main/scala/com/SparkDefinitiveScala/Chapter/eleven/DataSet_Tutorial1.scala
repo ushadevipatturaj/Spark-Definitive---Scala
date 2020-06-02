@@ -31,4 +31,22 @@ object DataSet_Tutorial1 extends App with Context{
   randomFlightDataset.show(10)
 
   randomFlightDataset.join(flightsDataset,Seq("count")).show(10)
+
+  //grouping
+  val count_groupby: Unit = flightsDataset.groupBy("DEST_COUNTRY_NAME").count().show()
+  val count_groupbykey = flightsDataset.groupByKey(x => x.DEST_COUNTRY_NAME).count()
+  def groupSum(countryName:String,iterator: Iterator[flight_data]) ={
+    iterator.dropWhile(_.count < 5).map(x => (countryName,x))
+  }
+  flightsDataset.groupByKey(x => x.DEST_COUNTRY_NAME).flatMapGroups(groupSum).show(truncate = false)
+
+  def grpsum2(f:flight_data)={
+    1
+  }
+  flightsDataset.groupByKey(x => x.DEST_COUNTRY_NAME).mapValues(grpsum2).count().show()
+  def createFlightData (left:flight_data,right: flight_data)={
+    flight_data(left.DEST_COUNTRY_NAME,null,left.count+right.count)
+  }
+  flightsDataset.groupByKey(x => x.DEST_COUNTRY_NAME).reduceGroups((l,r) => createFlightData(l,r)).show()
+
 }
