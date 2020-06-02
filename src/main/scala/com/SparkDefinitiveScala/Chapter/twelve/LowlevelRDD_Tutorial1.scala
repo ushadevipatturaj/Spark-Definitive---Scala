@@ -1,5 +1,8 @@
 package com.SparkDefinitiveScala.Chapter.twelve
 
+import java.io.{File, PrintWriter}
+
+import scala.util.Random
 import com.SparkDefinitiveScala.Chapter.nine.Context
 import org.apache.hadoop.io.compress.BZip2Codec
 
@@ -44,9 +47,9 @@ object LowlevelRDD_Tutorial1 extends App with Context{
   println(s"take ${take5.mkString(",")} takeprdered ${takeOrdered5.mkString(",")} and takeSample ${takeSample.mkString(",")}")
 
   //writing files
-//  rdd_spark.saveAsTextFile("D:\\Study_Materials\\spark-definitive-scala\\src\\main\\resources\\LowLevelRDDText")
-//  rdd_spark.saveAsTextFile("D:\\Study_Materials\\spark-definitive-scala\\src\\main\\resources\\LowLevelRDDTextCompression",classOf[BZip2Codec])
-//  rdd_spark.saveAsObjectFile("D:\\Study_Materials\\spark-definitive-scala\\src\\main\\resources\\LowLevelRDDSequenceFile")
+  rdd_spark.saveAsTextFile("D:\\Study_Materials\\spark-definitive-scala\\src\\main\\resources\\LowLevelRDDText")
+  rdd_spark.saveAsTextFile("D:\\Study_Materials\\spark-definitive-scala\\src\\main\\resources\\LowLevelRDDTextCompression",classOf[BZip2Codec])
+  rdd_spark.saveAsObjectFile("D:\\Study_Materials\\spark-definitive-scala\\src\\main\\resources\\LowLevelRDDSequenceFile")
 
   //caching
   rdd_spark.cache()
@@ -59,5 +62,16 @@ object LowlevelRDD_Tutorial1 extends App with Context{
   rdd_spark.checkpoint()
   println(rdd_spark.isCheckpointed)
 
-
+  println(rdd_spark.pipe("wc -l"))
+  println(rdd_spark.mapPartitions(_ => Iterator[Int](1)).sum())
+  rdd_spark.foreachPartition{iter =>
+    val filenum = new Random().nextInt()
+    val pw = new PrintWriter(new File(s"D:\\Study_Materials\\spark-definitive-scala\\src\\main\\resources\\random-file-$filenum"))
+    while (iter.hasNext){
+      pw.write(iter.next())              }
+    pw.close()
+  }
+  //glom
+  val glom =spark.sparkContext.parallelize(Seq("Hello","World","Usha","Devi")).glom()
+  glom.foreach(value => println(value.mkString(",")))
 }
