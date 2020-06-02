@@ -1,6 +1,7 @@
 package com.SparkDefinitiveScala.Chapter.twelve
 
 import com.SparkDefinitiveScala.Chapter.nine.Context
+import org.apache.hadoop.io.compress.BZip2Codec
 
 object LowlevelRDD_Tutorial1 extends App with Context{
   val myCollection = "Spark The Definitive Guide : Big Data Processing Made Simple"
@@ -41,5 +42,22 @@ object LowlevelRDD_Tutorial1 extends App with Context{
   val takeOrdered5 = spark.sparkContext.parallelize(1 to 20).takeOrdered(5)
   val takeSample = spark.sparkContext.parallelize(1 to 20).takeSample(withReplacement = false, num = 10,seed = 100L)
   println(s"take ${take5.mkString(",")} takeprdered ${takeOrdered5.mkString(",")} and takeSample ${takeSample.mkString(",")}")
+
+  //writing files
+//  rdd_spark.saveAsTextFile("D:\\Study_Materials\\spark-definitive-scala\\src\\main\\resources\\LowLevelRDDText")
+//  rdd_spark.saveAsTextFile("D:\\Study_Materials\\spark-definitive-scala\\src\\main\\resources\\LowLevelRDDTextCompression",classOf[BZip2Codec])
+//  rdd_spark.saveAsObjectFile("D:\\Study_Materials\\spark-definitive-scala\\src\\main\\resources\\LowLevelRDDSequenceFile")
+
+  //caching
+  rdd_spark.cache()
+  val storage = rdd_spark.getStorageLevel
+  println(s"storage $storage")
+
+  //checkpointing
+  spark.sparkContext.setCheckpointDir("D:\\Study_Materials\\spark-definitive-scala\\src\\main\\resources\\")
+  println(spark.sparkContext.getCheckpointDir)
+  rdd_spark.checkpoint()
+  println(rdd_spark.isCheckpointed)
+
 
 }
