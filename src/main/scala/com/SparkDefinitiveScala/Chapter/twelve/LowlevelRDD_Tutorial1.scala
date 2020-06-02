@@ -32,4 +32,14 @@ object LowlevelRDD_Tutorial1 extends App with Context{
   val count_value = rdd_spark.countByValue()
   val count_value_approx = rdd_spark.countByValueApprox(500,0.95)
   println(s"count approximate distinct $count_distinct , countbyvalue $count_value and countby value approximate $count_value_approx")
+
+  val first_val = rdd_spark.first()
+  val min_val = spark.sparkContext.parallelize(1 to 20).min()
+  val max_val = spark.sparkContext.parallelize(1 to 20).max()
+  println(s"first $first_val, min $min_val and max $max_val")
+  val take5 = spark.sparkContext.parallelize(1 to 20).take(5)
+  val takeOrdered5 = spark.sparkContext.parallelize(1 to 20).takeOrdered(5)
+  val takeSample = spark.sparkContext.parallelize(1 to 20).takeSample(withReplacement = false, num = 10,seed = 100L)
+  println(s"take ${take5.mkString(",")} takeprdered ${takeOrdered5.mkString(",")} and takeSample ${takeSample.mkString(",")}")
+
 }
