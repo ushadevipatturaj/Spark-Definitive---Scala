@@ -16,7 +16,8 @@ object SparkTypes_Tutorial1 extends App with Context{
   //checking whether the value is available
   dfCSV.select("InvoiceNo","StockCode","Quantity","InvoiceDate","UnitPrice").where($"InvoiceNo".equalTo(536365)).show()
   dfCSV.select("InvoiceNo","StockCode","Quantity","InvoiceDate","UnitPrice").where($"InvoiceNo" ===536365).show()
-  dfCSV.where("InvoiceNo = 536365").show()
+  dfCSV.where("CustomerId != 17850.0").show()
+  dfCSV.where("CustomerId is null").show()
 
   dfCSV.where($"StockCode".contains("DOT").or($"InvoiceNo" ===536365).and($"CustomerID".isNotNull)).show()
   val stockCode = $"StockCode".contains("DOT")
